@@ -25,8 +25,8 @@ def remove_background(n, b, c, background_relative, im, output_path = None, writ
     original_picture = cv2.cvtColor(original_picture, cv2.COLOR_BGR2GRAY)
 
 	# preprocess pixel values into binary
-    final_picture = cv2.medianBlur(original_picture,3)
-    binary_picture = cv2.adaptiveThreshold(final_picture,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+    # final_picture = cv2.medianBlur(original_picture,3) # removed median blur, seems to work better. 
+    binary_picture = cv2.adaptiveThreshold(original_picture,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
                                            cv2.THRESH_BINARY,b,c)
     # initialize binary mask
     binary_shape = binary_picture.shape

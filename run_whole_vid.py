@@ -10,6 +10,7 @@ from video_capture_function import *
 from detector_function import *
 from background_remover_function import *
 from track_cells import *
+import pandas as pd
 
 def usage():
     script = os.path.basename(__file__)
@@ -33,19 +34,20 @@ def usage():
 
 def main():
 
-    opts, files = getopt.getopt(sys.argv[1:], "h:w:n:b:c:r:t:", [ "help", "minboxweight","windowsize", "blocksize", "subtractedconstant", "backgroundrelative", "tuningmode"])
+    opts, files = getopt.getopt(sys.argv[1:], "h:w:d:n:b:c:r:t:", [ "help", "minboxweight","minlocalmaxdist","windowsize", "blocksize", "subtractedconstant", "backgroundrelative", "tuningmode"])
 
     if len(files) != 2:
         usage()
 
     # defaults:
     parameters = {}
-    parameters['w'] = 0.3
+    parameters['w'] = 0.2
     parameters['n'] = 1
     parameters['b'] = 1001
-    parameters['c'] = 0
+    parameters['c'] = -10
     parameters['r'] = 0
     parameters['t'] = False
+    parameters['d'] = 7
 
     # loop over options:
     for option, argument in opts:
@@ -53,6 +55,10 @@ def main():
             usage()
         elif option in ("-w", "--minboxweight"):
             parameters['w'] = argument
+            if np.float(parameters['w']) <= 0:
+                usage()
+        elif option in ("-d", "--minlocalmaxdist"):
+            parameters['d'] = argument
             if np.float(parameters['w']) <= 0:
                 usage()
         elif option in ("-n", "--windowsize"):
@@ -73,6 +79,7 @@ def main():
 
     # parameters
     min_box_weight = np.float(parameters['w'])
+    min_local_max_dist = np.int(parameters['d'])
     n = np.int(parameters['n'])
     b = np.int(parameters['b'])
     c = np.float(parameters['c'])
@@ -84,7 +91,6 @@ def main():
     # write images into a folder
     print('converting video to images...')
     im_list = store_images(files[0], output_picture_directory)
-    # im_list = im_list[:int(len(im_list)/6)]
 
     # remove background
     # input_folder = os.path.dirname(output_picture_directory)
@@ -93,11 +99,12 @@ def main():
 
     if tuning_mode:
         write_video(mask_list, files[1])
+        sys.exit()
         return
 
     # run detection on first frame
     print('detecting cells...')
-    total_boxes = detect_frames(min_box_weight, output_picture_directory, images_array = mask_list, num_frames = 1)
+    total_boxes = detect_frames(min_box_weight, min_local_max_dist, output_picture_directory, images_array = mask_list, num_frames = 1)
 
     # track cells
     new_roi_frequency = 400
@@ -107,6 +114,19 @@ def main():
     with open(output_picture_directory + '.txt', 'w') as f:
         f.write("%s\n" % total_boxes)
 
+    print(total_boxes)
+    # # write the same bounding box frame information to excel
+    # Create a Pandas Excel writer using XlsxWriter as the engine.
+    excel_writer = pd.ExcelWriter(output_picture_directory + '.xlsx', engine='xlsxwriter')
+    for interval in total_boxes:
+        startcol = 0
+        for frame in total_boxes:
+            dict = total_boxes[frame]
+            df = pd.DataFrame(dict).T
+            df.to_excel(excel_writer, startcol = startcol)
+            startcol += 7 # 7 is the number of box attributes.
+        startcol = 0
+    excel_writer.save()
 
 if __name__ == "__main__":
     main()

@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import os
 import getopt
-from run import *
+# from run_whole_vid import *
 
 def usage():
     script = os.path.basename(__file__)
@@ -68,21 +68,22 @@ def main():
     c = eval(c)
 
     # window size array
-    n_vals = np.arange(n[0],n[1],n[2])
+    # n_vals = np.arange(n[0],n[1],n[2])
+    n_vals = np.arange(1,3,1)
 
     # block size array
-    b_vals = np.arange(b[0],b[1],b[2])
-
+    # b_vals = np.arange(b[0],b[1],b[2])
+    b_vals = np.arange(501,1001,50)
     # constant array
-    c_vals = np.arange(c[0],c[1],c[2])
-
+    # c_vals = np.arange(c[0],c[1],c[2])
+    c_vals = np.arange(0,2,1)
     print(c_vals, b_vals, n_vals
     )
 
     for n in n_vals:
         for b in b_vals:
             for c in c_vals:
-                text = ('python scripts/run.py -t True ' + ' -n ' + str(n) + ' -b ' + str(b) + ' -c ' + str(c) + ' -r ' + str(r) + ' ' + files[0] + ' ' + \
+                text = ('python detect.py -t True ' + ' -n ' + str(n) + ' -b ' + str(b) + ' -c ' + str(c) + ' -r ' + str(r) + ' ' + files[0] + ' ' + \
                 output_directory_base + '_n'+ str(n) + '_b'+ str(b) + '_c' + str(c) + output_directory_extension)
                 os.system(text)
 
