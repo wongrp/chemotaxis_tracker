@@ -1,3 +1,4 @@
+""" A function file with all binary detection algorithms""" 
 import cv2
 import numpy as np
 import scipy
@@ -142,7 +143,7 @@ def detect(im, min_box_weight, min_local_max_dist):
         # elif (k == 113): # q is pressed
         #     break
 
-    # the next three for loops takes care of deleting and replacing bounding boxes. 
+    # the next three for loops takes care of deleting and replacing bounding boxes.
     # delete original bouding boxes that were replaced
     for i in range(len(rerun)):
             bboxes[np.max(rerun)] = 0

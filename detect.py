@@ -1,4 +1,5 @@
-# Detects cells in the specified frames.
+"""A 'run' script that detects cells in the specified frames, defaultly the
+entire video."""
 # Standard imports
 import cv2
 import numpy as np
@@ -10,7 +11,6 @@ import getopt
 from video_capture_function import *
 from detector_function import *
 from background_remover_function import *
-from track_cells import *
 import pandas as pd
 
 def usage():
@@ -114,9 +114,11 @@ def main():
     # run detection on first frame
     print('detecting cells...')
     total_boxes = detect_frames(min_box_weight, min_local_max_dist, output_picture_directory, images_array = mask_list, num_frames = len(im_list))
+
     # draw boxes on gray scale
     for frame_index, frame in enumerate(im_list):
-        f = total_boxes['frame ' + str(frame_index)]
+        frame_key = 'frame ' + str(frame_index)
+        f = total_boxes[frame_key]
         boxes = []
         for box in f:
             box = (f[box]['x'], f[box]['y'], f[box]['width'], f[box]['height'])
@@ -135,10 +137,9 @@ def main():
             print('outputting')
             cv2.imwrite(output_picture_directory + '_frame_' + str(np.int(start_frame)+(frame_index)) + '.tif', frame)
 
-        # write bounding box frame information. Each frame has its own text file.
-        for i in total_boxes:
-            with open(output_picture_directory + '_frame_' + str(np.int(start_frame)+(frame_index))+  '.txt', 'w') as f:
-                f.write("%s\n" % total_boxes[i])
+    # write bounding box frame information. Each frame has its own text file.
+        with open(output_picture_directory + '_frame_' + str(np.int(start_frame)+(frame_index))+  '.txt', 'w') as f:
+            f.write("%s\n" % total_boxes[frame_key])
 
 if __name__ == "__main__":
     main()

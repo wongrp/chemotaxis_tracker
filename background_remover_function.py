@@ -4,8 +4,9 @@ Created on Thu Aug  8 11:04:24 2019
 
 @author: wongryan and esfahanp
 
-remove_background() is the base function that takes one image and, depending on conditional parameters, writes the image to a directory.
-The three following functions can be chosen depending on the desired format.
+Function file: remove_background() is the base function that takes one image and,
+depending on conditional parameters, writes the image to a directory. The three
+following functions can be chosen depending on the desired format.
 """
 import sys
 import os
@@ -25,7 +26,7 @@ def remove_background(n, b, c, background_relative, im, output_path = None, writ
     original_picture = cv2.cvtColor(original_picture, cv2.COLOR_BGR2GRAY)
 
 	# preprocess pixel values into binary
-    # final_picture = cv2.medianBlur(original_picture,3) # removed median blur, seems to work better. 
+    # final_picture = cv2.medianBlur(original_picture,3) # removed median blur, seems to work better.
     binary_picture = cv2.adaptiveThreshold(original_picture,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
                                            cv2.THRESH_BINARY,b,c)
     # initialize binary mask
