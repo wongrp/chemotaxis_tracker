@@ -1,7 +1,7 @@
 # chemotaxis_tracker
 
 # Chemotaxis Tracker
-Image processor for chemotaxis videos integrated with detector and tracker.
+Image processing for chemotaxis videos integrated with detector and tracker.
 
 ## Packages
 Numpy, matplotlib \
