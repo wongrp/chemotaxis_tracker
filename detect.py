@@ -95,7 +95,7 @@ def main():
     print('converting video to images...')
     start_frame = input("Enter starting frame (first frame = 0)")
     end_frame = input("Enter ending frame. If going to the end, press enter ")
-    im_list = store_images(files[0], output_picture_directory)
+    im_list = store_images(files[0])
     if end_frame == '':
         im_list = im_list[np.int(start_frame):]
     else:

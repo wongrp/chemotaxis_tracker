@@ -1,0 +1,18 @@
+Command file: 
+Example commands to run detection and tracking. This will be updated and integrated into the GitHub readme file.
+
+Detection: 
+First input:input video 
+Second input: output sequence name (if input 'folder/name', the output will have a series of images and texts with path 'folder/name_0, folder/name_1, ....' 
+
+Example: 
+python3 detect.py data/ch02_level_2/ch02_level_2.avi data/ch02_level_2/frame_ 
+
+
+Tracking: 
+First input: input video
+Second input: detected bounding boxes
+Third input: output sequence name (if input 'folder/name', the output will have a series of images and texts with path 'folder/name_0, folder/name_1, ....' 
+
+Example: 
+python3 iou_run.py data/ch02_level_2/ch02_level_2.avi data/ch02_level_2/bbox_text/_frame_ data/ch02_level_2/tracked_images/tracked

@@ -1,0 +1,34 @@
+3/5/20
+added a counter in the current_frame_dict assignment for loop to combat
+indices jumping once cells disappear.
+Still have index jumping problems, will need to see if it's a plotting/image (opencv)
+error or a calculation error.
+
+3/6/20
+Trying to fix alg script first.
+Somehow the resulting dictionary is more or less in tracking order but:
+1. cells disappearing causes later boxes to shift indices down one.
+2. In addition, the box id's are not ordered as desired.(probably a problem
+with the id stuff)
+
+idea: for cells that jump out of iou range, maybe artificially enlarge
+      boxes during calculation...
+
+2:45 pm: printing all major steps and comparing between detection and tracking
+         to find out what's going on with the index jumping
+
+3/9/20
+Met with Pedram. Updates to be made:
+1. Fix index jumping issue
+2. Change file format to tif from avi
+3. Update readme file
+
+Side updates:
+1. Single cell trajectories
+2. Cell shape / alignment based on box information
+
+
+3/17/20
+Problem spotted: end boxes are getting deleted whenever current box length is
+less than previous box length. This information is getting lost when doing the
+linear sum assignment.

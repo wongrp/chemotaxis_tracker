@@ -29,7 +29,7 @@ def write_images(input_path, output_path):
         counter += 1
 
 # takes video, stores frames into list
-def store_images(input_path, output_path):
+def store_images(input_path):
     # read video and create list
     im_list = []
     captured_video, initial_frame, frame_width, frame_height, success = capture_video(input_path)
